@@ -1,13 +1,13 @@
-import Feed from '@/components/Feed/Feed'
+import Chat from '@/components/Chat/Chat'
 import Layout from '@/components/Layout/Layout'
 import React from 'react'
 
-const FeedPage = () => {
+const ChatsPage = () => {
     return (
         <Layout>
-            <Feed></Feed>
+            <Chat></Chat>
         </Layout>
     )
 }
 
-export default FeedPage
+export default ChatsPage
