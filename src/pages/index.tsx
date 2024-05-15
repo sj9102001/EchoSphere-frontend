@@ -5,8 +5,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <Layout>
-      <main>Main Content</main>
-    </Layout>
+    <div>
+      <Layout>
+        <main>Main Content</main>
+      </Layout>
+    </div>
   );
 }
