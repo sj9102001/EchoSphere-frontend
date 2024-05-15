@@ -1,7 +1,7 @@
 import React from "react";
 
 const Chat = () => {
-  return <div className="flex-1 border-solid border-2">Chat</div>;
+  return <div className="">Chat</div>;
 };
 
 export default Chat;

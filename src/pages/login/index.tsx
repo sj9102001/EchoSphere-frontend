@@ -1,26 +1,38 @@
 import Link from "next/link";
 import React, { useRef } from "react";
 import Logo from "@/ui/Logo";
-import { signIn } from 'next-auth/react';
 import Toast, { showErrorToast } from "@/ui/Toast";
+import { useRouter } from "next/router";
 
 
 const Login = () => {
+    const router = useRouter();
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
-    const handleFormSubmit = (e: SubmitEvent) => {
+    const handleFormSubmit = async (e: SubmitEvent) => {
         e.preventDefault();
-
-        signIn('credentials', { email: emailRef.current!.value, password: passwordRef.current!.value, redirect: false })
-            .then((res) => {
-                if (res!.error === 'CredentialsSignin') {
-                    showErrorToast("Invalid Credentials");
-                }
-            })
-            .catch((error) => {
-                showErrorToast("Authentiation Unsuccesful");
+        const formData = {
+            email: emailRef.current!.value,
+            password: passwordRef.current!.value,
+        };
+        try {
+            const response = await fetch("http://localhost:8080/user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+                credentials: "include",
             });
-
+            const data = await response.json();
+            if (response.status === 200) {
+                router.replace("/");
+            } else {
+                showErrorToast(data.message);
+            }
+        } catch (error) {
+            showErrorToast("An error occurred during login");
+        }
 
     };
 

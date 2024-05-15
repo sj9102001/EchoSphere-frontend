@@ -1,16 +1,27 @@
-import Button from "@/ui/Button";
 import Logo from "@/ui/Logo";
+import { showErrorToast } from "@/ui/Toast";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { signOut } from "next-auth/react"
 
 
 const Navbar = () => {
+  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   function toggleSidebar() {
     setShowSidebar((prevState) => {
       return !prevState;
     });
+  }
+  const signOutHandler = async () => {
+    const logoutResponse = await fetch("http://localhost:8080/user/logout", {
+      credentials: "include",
+    });
+    if (logoutResponse.status === 200) {
+      router.replace("/");
+    } else {
+      showErrorToast("Error logging you out!");
+    }
   }
   return (
     <nav className=" bg-bgColor sm:border-r-2 sm:border-solid sm:border-primaryColor border-b-2 sm:h-screen border-solid border-primaryColor">
@@ -19,14 +30,14 @@ const Navbar = () => {
           <Logo></Logo>
         </div>
         <div className="hidden sm:block sm:flex-row h-full sm:text-lg  lg:text-2xl space-y-10 sm:pl-6 sm:pt-6">
-          <div className="">Home</div>
-          <div className="">Feed</div>
+          <Link href="/" className="block">Home</Link>
+          <Link href="/feed" className="block">Feed</Link>
           <div className="">Create</div>
-          <div className="">Chat</div>
-          <div className="">Profile</div>
+          <Link href="/chat" className="block">Chat</Link>
+          <Link href="/profile" className="block">Profile</Link>
         </div>
         <div className="sm:flex-col sm:justify-center items-center sm:items-start flex w-full  gap-5 p-5 sm:gap-8 sm:p-6 sm:pb-16 ">
-          <button onClick={() => signOut()} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Logout</button>
+          <button onClick={() => signOutHandler()} type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Logout</button>
           <div className="">
             <button
               onClick={toggleSidebar}

@@ -1,24 +1,45 @@
-import { Inter } from "next/font/google";
 import Layout from "@/components/Layout/Layout";
-import Toast from "@/ui/Toast";
-import { useSession } from "next-auth/react"
-import Login from "./../components/Login";
+import { Inter } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+export default function Home(props: {
+  user: {
+    name: string,
+    id: number,
+    email: string,
+  }
+}) {
+  return <Layout>
+    <div>{props.user.name}</div>
+  </Layout>
 
-export default function Home() {
-  const { data: session, status } = useSession()
-  if (status === "authenticated") {
-    return (
-      <div>
-        <Toast></Toast>
-        <Layout>
-          <main>{session.user!.name}</main>
-        </Layout>
-      </div>
-    );
+}
+export async function getServerSideProps(context: any) {
+  const req = context.req;
+  const cookieHeader = req.headers.cookie;
+  const authResponse = await fetch("http://localhost:8080/user/verifyAuth", {
+    headers: {
+      Cookie: cookieHeader,
+    },
+  });
+
+  if (authResponse.status === 401) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
   }
 
-  return <Login></Login>
+  const authData = await authResponse.json();
 
+  return {
+    props: {
+      user: {
+        name: authData.user.name,
+        email: authData.user.email,
+        id: authData.user.id,
+      },
+    },
+  };
 }
