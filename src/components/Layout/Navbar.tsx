@@ -20,7 +20,8 @@ const Navbar = () => {
     if (logoutResponse.status === 200) {
       router.replace("/");
     } else {
-      showErrorToast("Error logging you out!");
+      showErrorToast
+        ("Error logging you out!");
     }
   }
   return (

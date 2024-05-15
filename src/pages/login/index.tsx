@@ -3,10 +3,11 @@ import React, { useRef } from "react";
 import Logo from "@/ui/Logo";
 import Toast, { showErrorToast } from "@/ui/Toast";
 import { useRouter } from "next/router";
-
+import { useUser } from "@/context/UserContext";
 
 const Login = () => {
     const router = useRouter();
+    const { setUser } = useUser();
     const emailRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
     const handleFormSubmit = async (e: SubmitEvent) => {
@@ -26,6 +27,11 @@ const Login = () => {
             });
             const data = await response.json();
             if (response.status === 200) {
+                setUser({
+                    email: data.user.email,
+                    id: data.user.id,
+                    name: data.user.name
+                });
                 router.replace("/");
             } else {
                 showErrorToast(data.message);
