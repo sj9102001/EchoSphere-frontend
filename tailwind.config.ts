@@ -9,14 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bgColor: '#242038',
-        primaryColor: '#725ac1',
-        secondaryColor: '#8d86c9',
-        accentColor: '#ffd60a',
-        textColor: '#f7ece1',
-        successColor: '#29bf12',
-        errorColor: '#f21b3f'
-      }
+        bgColor: "#11151C",
+        primaryColor: "#212D40",
+        secondaryColor: "#364156",
+        accentColor: "#D66853",
+        secAccentColor: "#C05D4A",
+        textColor: "#f3e3d3",
+        placeholderColor: "#bfb1a3",
+        successColor: "#29bf12",
+        errorColor: "#f21b3f",
+      },
     },
   },
   plugins: [],

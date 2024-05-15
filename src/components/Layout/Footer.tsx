@@ -1,9 +1,8 @@
-import Link from "next/link";
 import React, { useState } from "react";
 
 const Footer = () => {
   return (
-    <nav className=" bg-primaryColor md:max-w-44 h-[7vh]">
+    <nav className=" bg-bgColor border-t-2 sm:h-screen border-solid border-primaryColor">
       <nav
         className="mx-auto flex md:flex-row items-center justify-evenly p-4"
         aria-label="Global"

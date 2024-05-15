@@ -1,13 +1,13 @@
-import Feed from '@/components/Feed/Feed'
-import Layout from '@/components/Layout/Layout'
-import React from 'react'
+import Feed from "@/components/Feed/Feed";
+import Layout from "@/components/Layout/Layout";
+import React from "react";
 
 const FeedPage = () => {
-    return (
-        <Layout>
-            <Feed></Feed>
-        </Layout>
-    )
-}
+  return (
+    <Layout>
+      <Feed />
+    </Layout>
+  );
+};
 
-export default FeedPage
+export default FeedPage;
