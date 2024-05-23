@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import ModalButton from "./ModalButton";
 
 const Footer = () => {
   return (
@@ -21,6 +22,7 @@ const Footer = () => {
         <Link href="/profile" className="block">
           Profile
         </Link>
+        <ModalButton />
       </nav>
     </nav>
   );

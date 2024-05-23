@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+const plugin = require("tailwindcss/plugin");
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -21,6 +21,18 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none", // IE and Edge
+          "scrollbar-width": "none", // Firefox
+        },
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none", // Safari and Chrome
+        },
+      });
+    }),
+  ],
 };
 export default config;

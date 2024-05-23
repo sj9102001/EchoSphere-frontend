@@ -3,6 +3,7 @@ import { showErrorToast } from "@/ui/Toast";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import ModalButton from "./ModalButton";
 
 const Navbar = () => {
   const router = useRouter();
@@ -42,9 +43,7 @@ const Navbar = () => {
           <Link href="/profile" className="block">
             Profile
           </Link>
-          <Link href="/profile" className="block">
-            Search
-          </Link>
+          <ModalButton />
         </div>
         <div className="sm:flex-col sm:justify-center items-center justify-end sm:items-start flex w-full  gap-5 p-5 sm:gap-8 sm:p-6 sm:pb-16 ">
           <button

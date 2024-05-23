@@ -7,6 +7,7 @@ export default function Document() {
       <body className="bg-bgColor text-textColor h-scree w-screen relative">
         <Main />
         <NextScript />
+        <div id="modal-root"></div>
       </body>
     </Html>
   );
