@@ -4,10 +4,9 @@ import ReactDOM from "react-dom";
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
-  title?: string;
 }
 
-const SearchModal: React.FC<ModalProps> = ({ onClose, children }) => {
+const CreateModal: React.FC<ModalProps> = ({ onClose, children }) => {
   const [isClient, setIsClient] = useState(false);
   const modalWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -57,45 +56,20 @@ const SearchModal: React.FC<ModalProps> = ({ onClose, children }) => {
       >
         <div className="bg-primaryColor h-full w-full rounded-xl py-2 flex-col  ">
           {/* close button */}
-          <div className="relative flex justify-center border-b-2 border-secondaryColor h-11">
-            <div className=" text-textColor font-semibold text-xl pt-1">
-              Search
+          <div className="flex justify-center relative border-b-2 border-secondaryColor h-11">
+            <div className=" text-textColor pt-1 font-semibold text-xl">
+              Create new post
             </div>
-            <a className="absolute right-3" href="#" onClick={handleCloseClick}>
-              <svg
-                width="2rem"
-                height="2rem"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-
-                <g id="SVGRepo_iconCarrier">
-                  {" "}
-                  <path
-                    d="M7 17L16.8995 7.10051"
-                    stroke="#f3e3d3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />{" "}
-                  <path
-                    d="M7 7.00001L16.8995 16.8995"
-                    stroke="#f3e3d3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />{" "}
-                </g>
-              </svg>
+            <a
+              className="absolute right-3 top-1 rounded-md text-sm px-3 py-1 bg-secondaryColor hover:bg-secAccentColor transition duration-300 ease-in-out border-slate-600 border-[1px] group-hover:border-secAccentColor"
+              href="#"
+              onClick={handleCloseClick}
+            >
+              Post
             </a>
           </div>
-          <div className="pt-2">{children}</div>
+          <div className="pt-2 h-full">{children}</div>
         </div>
       </div>
     </div>
@@ -107,4 +81,4 @@ const SearchModal: React.FC<ModalProps> = ({ onClose, children }) => {
   );
 };
 
-export default SearchModal;
+export default CreateModal;

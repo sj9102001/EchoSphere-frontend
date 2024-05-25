@@ -39,7 +39,7 @@ const Navbar = () => {
           <Link href="/feed" className="block">
             Feed
           </Link>
-          <div className="">Create</div>
+          <CreateButton />
           <Link href="/chat" className="block">
             Chat
           </Link>

@@ -5,16 +5,21 @@ import Friends from "./Friends";
 import FriendRequests from "./FriendRequests";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
-const Profile = ({ visitingId, email, name, bio }: {
-  visitingId: number,
-  name: string,
-  email: string,
-  bio: string | null
+const Profile = ({
+  visitingId,
+  email,
+  name,
+  bio,
+}: {
+  visitingId: number;
+  name: string;
+  email: string;
+  bio: string | null;
 }) => {
   const { user } = useUser();
   console.log(visitingId, user?.id);
 
-  const isMe = (parseInt(visitingId.toString()) === user?.id ? true : false);
+  const isMe = parseInt(visitingId.toString()) === user?.id ? true : false;
   console.log(isMe);
   return (
     <div className="flex-col h-full w-full px-8 lg:px-12">
@@ -28,6 +33,7 @@ const Profile = ({ visitingId, email, name, bio }: {
             alt="profile picture"
           />
         </div>
+        {/* posts and friends count */}
         <div className="flex justify-between text-textColor font-semibold text-lg items-center gap-20">
           <Link href={"/profile#posts"} className="">
             <span className="flex justify-center">10</span>Posts
@@ -38,21 +44,26 @@ const Profile = ({ visitingId, email, name, bio }: {
         </div>
       </div>
       <div className="flex-row space-y-2 sm:space-y-4 text-textColor border-b-[1px] border-primaryColor pb-4 sm:pb-8 overflow-ellipsis">
-        {/* bio */}
+        {/* name */}
         <div className="font-bold  text-xl">{name}</div>
-        <p className="font-normal text-lg truncate max-w-48">
-          {bio}
-        </p>
+        {/* bio */}
+        <p className="font-normal text-lg truncate max-w-48">{bio}</p>
         {/*buttons */}
-        {isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
-          Edit Profile
-        </button>}
-        {!isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
-          Follow
-        </button>}
-        {!isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
-          Message
-        </button>}
+        {isMe && (
+          <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+            Edit Profile
+          </button>
+        )}
+        {!isMe && (
+          <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+            Follow
+          </button>
+        )}
+        {!isMe && (
+          <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+            Message
+          </button>
+        )}
       </div>
       <div className="pt-4">
         <div className="flex items-center">
