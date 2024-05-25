@@ -27,11 +27,14 @@ const Login = () => {
             });
             const data = await response.json();
             if (response.status === 200) {
+                console.log(data.user);
                 setUser({
                     email: data.user.email,
                     id: data.user.id,
-                    name: data.user.name
+                    name: data.user.name,
+                    bio: data.user.bio,
                 });
+                localStorage.setItem("user", JSON.stringify(data.user));
                 router.replace("/");
             } else {
                 showErrorToast(data.message);

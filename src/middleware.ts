@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
     if (cookieHeader === undefined) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
+
     const authResponse = await fetch("http://localhost:8080/user/verifyAuth", {
         headers: {
             Cookie: cookieHeader,

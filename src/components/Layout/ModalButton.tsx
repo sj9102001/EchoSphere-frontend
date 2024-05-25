@@ -1,9 +1,55 @@
 import SearchModal from "./SearchModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchResults from "./SearchResults";
+import useDebounce from "../../hooks/useDebounce";
 
 export default function ModalButton() {
   const [showModal, setShowModal] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<{
+    totalCount: number,
+    searchList: [{
+      id: number,
+      imageUrl: "/favicon.ico",
+      name: string,
+      bio: string | null
+    }] | null
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const debouncedQuery = useDebounce(query, 500);
+
+  useEffect(() => {
+    if (debouncedQuery.trim()) {
+      const fetchResults = async () => {
+        setLoading(true);
+        const res = await fetch('http://localhost:8080/user/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query: debouncedQuery }),
+        });
+
+        const data = await res.json();
+        if (data.data) {
+          console.log(data.data);
+          setResults({ totalCount: data.data.length, searchList: data.data });
+        } else {
+          setResults(null);
+        }
+        setLoading(false);
+      };
+
+      fetchResults();
+    } else {
+      setResults(null);
+    }
+  }, [debouncedQuery]);
+
+  const handleSearch = (e: any) => {
+    setQuery(e.target.value);
+  };
 
   return (
     <div>
@@ -12,7 +58,7 @@ export default function ModalButton() {
         <SearchModal onClose={() => setShowModal(false)}>
           <div className="flex w-full justify-center items-center">
             {/* Searchbar */}
-            <div className="relative border border-accentColor w-4/5 focus-within:border-2  overflow-hidden mt-2 rounded-xl">
+            <div className="relative border border-accentColor w-4/5 focus-within:border-2 overflow-hidden mt-2 rounded-xl">
               <svg
                 className="absolute top-1/2 left-6 h-6 w-5 transform -translate-y-1/2"
                 viewBox="0 0 24 24"
@@ -55,11 +101,17 @@ export default function ModalButton() {
                 className="pl-14 pr-6 py-[6px] text-textColor w-full placeholder-textColor font-light outline-none bg-transparent"
                 type="search"
                 placeholder="Search People, Posts, Tags..."
+                value={query}
+                onChange={handleSearch}
               />
             </div>
           </div>
-          <div className="h-1/2 overflow-auto ">
-            <SearchResults />
+          <div className="h-1/2 overflow-auto">
+            {loading ? (
+              <p className="flex justify-center items-center h-80">Loading...</p>
+            ) : (
+              <SearchResults results={results} />
+            )}
           </div>
         </SearchModal>
       )}

@@ -4,8 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ModalButton from "./ModalButton";
+import { useUser } from "@/context/UserContext";
 
 const Navbar = () => {
+  const { user } = useUser();
   const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   function toggleSidebar() {
@@ -18,6 +20,7 @@ const Navbar = () => {
       credentials: "include",
     });
     if (logoutResponse.status === 200) {
+      localStorage.removeItem("user"); // Remove user data from local storage
       router.replace("/");
     } else {
       showErrorToast("Error logging you out!");
@@ -40,7 +43,7 @@ const Navbar = () => {
           <Link href="/chat" className="block">
             Chat
           </Link>
-          <Link href="/profile" className="block">
+          <Link href={`/profile/${user?.id}`} className="block">
             Profile
           </Link>
           <ModalButton />

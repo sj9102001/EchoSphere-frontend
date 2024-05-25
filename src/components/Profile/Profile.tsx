@@ -4,7 +4,18 @@ import Posts from "./Posts";
 import Friends from "./Friends";
 import FriendRequests from "./FriendRequests";
 import Link from "next/link";
-const Profile = () => {
+import { useUser } from "@/context/UserContext";
+const Profile = ({ visitingId, email, name, bio }: {
+  visitingId: number,
+  name: string,
+  email: string,
+  bio: string | null
+}) => {
+  const { user } = useUser();
+  console.log(visitingId, user?.id);
+
+  const isMe = (parseInt(visitingId.toString()) === user?.id ? true : false);
+  console.log(isMe);
   return (
     <div className="flex-col h-full w-full px-8 lg:px-12">
       <div className="flex justify-start gap-20 sm:pr-12">
@@ -28,20 +39,20 @@ const Profile = () => {
       </div>
       <div className="flex-row space-y-2 sm:space-y-4 text-textColor border-b-[1px] border-primaryColor pb-4 sm:pb-8 overflow-ellipsis">
         {/* bio */}
-        <div className="font-bold  text-xl">Sunny V</div>
+        <div className="font-bold  text-xl">{name}</div>
         <p className="font-normal text-lg truncate max-w-48">
-          bioooooooooooooooooooooooooooo
+          {bio}
         </p>
         {/*buttons */}
-        <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+        {isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
           Edit Profile
-        </button>
-        <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+        </button>}
+        {!isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 mr-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
           Follow
-        </button>
-        <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
+        </button>}
+        {!isMe && <button className="focus:outline-none text-textColor font-medium rounded-lg text-md px-5 py-1 my-2 bg-primaryColor hover:bg-secAccentColor focus:ring-accentColor transition-colors duration-300 ease-in-out">
           Message
-        </button>
+        </button>}
       </div>
       <div className="pt-4">
         <div className="flex items-center">
@@ -56,10 +67,10 @@ const Profile = () => {
         </div>
         <Posts />
 
-        <div className="pt-4">
+        {/* <div className="pt-4">
           <Friends />
           <FriendRequests />
-        </div>
+        </div> */}
       </div>
     </div>
   );
