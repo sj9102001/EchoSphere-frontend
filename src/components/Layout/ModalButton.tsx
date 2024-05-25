@@ -7,7 +7,7 @@ export default function ModalButton() {
   const [showModal, setShowModal] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{
-    totalCount: number,
+    showMore: boolean,
     searchList: [{
       id: number,
       imageUrl: "/favicon.ico",
@@ -28,13 +28,12 @@ export default function ModalButton() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ query: debouncedQuery }),
+          body: JSON.stringify({ query: debouncedQuery, skip: 0 }),
         });
 
         const data = await res.json();
-        if (data.data) {
-          console.log(data.data);
-          setResults({ totalCount: data.data.length, searchList: data.data });
+        if (data.searchList) {
+          setResults({ showMore: data.showLoadMore, searchList: data.searchList });
         } else {
           setResults(null);
         }
