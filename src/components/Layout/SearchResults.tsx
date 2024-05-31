@@ -1,7 +1,8 @@
+import { showErrorToast } from "@/ui/Toast";
 import Image from "next/image";
 import React, { useState } from "react";
 
-const SearchResults = ({ results }: {
+const SearchResults = ({ results, query }: {
   results: {
     showMore: boolean,
     searchList: [{
@@ -10,7 +11,8 @@ const SearchResults = ({ results }: {
       name: string,
       bio: string | null
     }] | null
-  } | null
+  } | null,
+  query: string
 }) => {
   const [resultsToShow, setResultsToShow] = useState<[{
     id: number,
@@ -18,11 +20,37 @@ const SearchResults = ({ results }: {
     name: string,
     bio: string | null
   }] | null>(results === null ? null : results.searchList);
+  const [skipCount, setSkipCount] = useState<number>(4);
+  const [showMore, setShowMore] = useState<boolean>(results!.showMore);
   if (results === null) {
     return <div className="flex justify-center items-center h-80">
       <h2>No results to show</h2>
     </div>
   }
+
+  const fetchMore = async () => {
+    try {
+      const res = await fetch('http://localhost:8080/user/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: query, skip: 0 }),
+      });
+
+      const data = await res.json();
+      if (data.searchList) {
+        setResultsToShow(prevResults => (prevResults ? [...prevResults, ...data.searchList] : data.searchList));
+        setShowMore(data.showLoadMore);
+      } else {
+        showErrorToast("Cannot fetch more");
+      }
+      setSkipCount(prevSkipCount => prevSkipCount + 4);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="max-h-80 overflow-auto mt-8 scroll-p-10 no-scrollbar">
       <ul className="w-full flex-col text-textColor space-y-4">
@@ -49,8 +77,8 @@ const SearchResults = ({ results }: {
         ))}
       </ul>
       <div className="flex justify-center pt-4">
-        {results.showMore && <button
-          onClick={() => { }}
+        {showMore && <button
+          onClick={fetchMore}
           className="rounded-md text-sm px-3 py-1 bg-secondaryColor hover:bg-secAccentColor transition duration-300 ease-in-out border-slate-600 border-[1px] group-hover:border-secAccentColor"
         >
           Load More

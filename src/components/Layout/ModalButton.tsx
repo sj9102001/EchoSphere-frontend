@@ -109,7 +109,7 @@ export default function ModalButton() {
             {loading ? (
               <p className="flex justify-center items-center h-80">Loading...</p>
             ) : (
-              <SearchResults results={results} />
+              <SearchResults results={results} query={query} />
             )}
           </div>
         </SearchModal>

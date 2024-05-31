@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import ModalButton from "./ModalButton";
+import CreateButton from "../CreateButton";
 
 const Footer = () => {
   return (
@@ -15,7 +16,7 @@ const Footer = () => {
         <Link href="/feed" className="block">
           Feed
         </Link>
-        <div className="">Create</div>
+        <CreateButton></CreateButton>
         <Link href="/chat" className="block">
           Chat
         </Link>
