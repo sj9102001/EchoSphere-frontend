@@ -1,8 +1,9 @@
 import { showErrorToast } from "@/ui/Toast";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-const SearchResults = ({ results, query }: {
+const SearchResults = ({ results, query, closeModal }: {
   results: {
     showMore: boolean,
     searchList: [{
@@ -12,7 +13,8 @@ const SearchResults = ({ results, query }: {
       bio: string | null
     }] | null
   } | null,
-  query: string
+  query: string,
+  closeModal: () => void
 }) => {
   const [resultsToShow, setResultsToShow] = useState<[{
     id: number,
@@ -20,8 +22,9 @@ const SearchResults = ({ results, query }: {
     name: string,
     bio: string | null
   }] | null>(results === null ? null : results.searchList);
+  const router = useRouter();
   const [skipCount, setSkipCount] = useState<number>(4);
-  const [showMore, setShowMore] = useState<boolean>(results!.showMore);
+  const [showMore, setShowMore] = useState<boolean>(results ? results.showMore : false);
   if (results === null) {
     return <div className="flex justify-center items-center h-80">
       <h2>No results to show</h2>
@@ -35,7 +38,7 @@ const SearchResults = ({ results, query }: {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: query, skip: 0 }),
+        body: JSON.stringify({ query: query, skip: skipCount }),
       });
 
       const data = await res.json();
@@ -51,12 +54,18 @@ const SearchResults = ({ results, query }: {
     }
   }
 
+  const navigateToProfile = (id: number) => {
+    router.push(`/profile/${id}`);
+    closeModal()
+  }
+
   return (
     <div className="max-h-80 overflow-auto mt-8 scroll-p-10 no-scrollbar">
       <ul className="w-full flex-col text-textColor space-y-4">
         {resultsToShow!.map((result) => (
           <li
             key={result.id}
+            onClick={() => navigateToProfile(result.id)}
             className="flex justify-between items-center bg-secondaryColor rounded-xl py-2 mx-6 pl-2 group pr-4 hover:bg-slate-600 transition-colors duration-300 ease-in-out shadow-[2.0px_6.0px_8.0px_rgba(0,0,0,0.38)]"
           >
             <div className="flex gap-4 items-center">
