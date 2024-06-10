@@ -21,7 +21,7 @@ const SearchResults = ({ results, query }: {
     bio: string | null
   }] | null>(results === null ? null : results.searchList);
   const [skipCount, setSkipCount] = useState<number>(4);
-  const [showMore, setShowMore] = useState<boolean>(results!.showMore);
+  const [showMore, setShowMore] = useState<boolean>(results?results.showMore : false);
   if (results === null) {
     return <div className="flex justify-center items-center h-80">
       <h2>No results to show</h2>
