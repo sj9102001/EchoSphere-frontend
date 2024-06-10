@@ -20,7 +20,7 @@ export default function ModalButton() {
   const debouncedQuery = useDebounce(query, 500);
 
   useEffect(() => {
-    if (debouncedQuery.trim()) {
+    if (debouncedQuery.trim() && debouncedQuery.trim() !== "") {
       const fetchResults = async () => {
         setLoading(true);
         const res = await fetch('http://localhost:8080/user/search', {
@@ -49,12 +49,15 @@ export default function ModalButton() {
   const handleSearch = (e: any) => {
     setQuery(e.target.value);
   };
+  const closeModal = () => {
+    setShowModal(false)
+  }
 
   return (
     <div>
       <button onClick={() => setShowModal(true)}>Search</button>
       {showModal && (
-        <SearchModal onClose={() => setShowModal(false)}>
+        <SearchModal onClose={closeModal}>
           <div className="flex w-full justify-center items-center">
             {/* Searchbar */}
             <div className="relative border border-accentColor w-4/5 focus-within:border-2 overflow-hidden mt-2 rounded-xl">
@@ -109,7 +112,7 @@ export default function ModalButton() {
             {loading ? (
               <p className="flex justify-center items-center h-80">Loading...</p>
             ) : (
-              <SearchResults results={results} query={query} />
+              <SearchResults results={results} query={query} closeModal={closeModal} />
             )}
           </div>
         </SearchModal>
